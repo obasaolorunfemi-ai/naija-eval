@@ -1,0 +1,140 @@
+{
+ "model": "gpt61sol",
+ "openrouter_id": "openai/gpt-6.1-sol",
+ "n": 100,
+ "pairs": {
+  "en->ha": {
+   "chrf++": 51.1,
+   "chrf++_nomarks": 51.1,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "ref": "Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.",
+     "hyp": "Romantiksanci ya ƙunshi babban ɓangare na ra’ayin cewa al’adu ne ke ƙaddara rayuwar ɗan Adam, wanda aka samo daga marubuta irin su Goethe, Fichte, da Schlegel."
+    },
+    {
+     "src": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "ref": "Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.",
+     "hyp": "Bai ƙayyade adadin ragin ba, yana mai cewa za a yi ragin ne bisa ga yawan abin da tattalin arzikin Sin ke samarwa."
+    },
+    {
+     "src": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "ref": "Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.",
+     "hyp": "Gami ainihin cakuda ne na ƙarafa biyu ko fiye. Kada ka manta cewa akwai sinadarai da yawa a kan jadawalin sinadarai."
+    }
+   ]
+  },
+  "ha->en": {
+   "chrf++": 62.2,
+   "chrf++_nomarks": 62.2,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.",
+     "ref": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "hyp": "The artistic and literary framework for cultural production, developed by writers such as Goethe, Fichte, and Schlegel."
+    },
+    {
+     "src": "Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.",
+     "ref": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "hyp": "He did not specify a figure for the reduction, saying it would depend on China’s economic output."
+    },
+    {
+     "src": "Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.",
+     "ref": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "hyp": "An alloy is a combination of two or more metals. Remember that there are many elements on the periodic table."
+    }
+   ]
+  },
+  "en->ig": {
+   "chrf++": 42.8,
+   "chrf++_nomarks": 45.8,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "ref": "Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.",
+     "hyp": "Romantisizim nwere nnukwu akụkụ nke echiche na omenala na-ekpebi omume mmadụ, nke sitere n’aka ndị ode akwụkwọ dịka Goethe, Fichte na Schlegel."
+    },
+    {
+     "src": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "ref": "O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.",
+     "hyp": "O kwughị ókè mbelata ndị ahụ ga-eru, na-ekwu na a ga-eme ha dabere na mmepụta akụ na ụba China."
+    },
+    {
+     "src": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "ref": "Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.",
+     "hyp": "Alọị bụ ngwakọta ọla abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ elementi na tebụl oge."
+    }
+   ]
+  },
+  "ig->en": {
+   "chrf++": 62.0,
+   "chrf++_nomarks": 62.0,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.",
+     "ref": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "hyp": "His romanticism had much to do with the celebration of tradition, drawing on writers such as Goethe, Fichte, and Schlegel."
+    },
+    {
+     "src": "O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.",
+     "ref": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "hyp": "He did not specify the amount to be paid, but said it would be based on China’s economic output."
+    },
+    {
+     "src": "Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.",
+     "ref": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "hyp": "Alloys are mixtures of two or more metals. Remember that there are many elements in the periodic table."
+    }
+   ]
+  },
+  "en->yo": {
+   "chrf++": 31.3,
+   "chrf++_nomarks": 41.0,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "ref": "Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.",
+     "hyp": "Rómántísísìmù ní apá ńlá kan tí ó dá lórí ìgbàgbọ́ pé àṣà ló ń pinnu ìwà ènìyàn, èyí tí a fà yọ láti inú iṣẹ́ àwọn òǹkọ̀wé bíi Goethe, Fichte, àti Schlegel."
+    },
+    {
+     "src": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "ref": "Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.",
+     "hyp": "Kò sọ iye pàtó fún àwọn ìdínkù náà, ó ní a ó ṣe wọ́n ní ìbámu pẹ̀lú ìwọ̀n ohun tí ètò ọrọ̀ ajé Ṣáínà ń mú jáde."
+    },
+    {
+     "src": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "ref": "Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.",
+     "hyp": "Àwọn àdàlù irin jẹ́ àpapọ̀ irin méjì tàbí jù bẹ́ẹ̀ lọ ní pàtàkì. Má gbàgbé pé ọ̀pọ̀ èròjà ló wà lórí tábìlì ìgbàkọọkan."
+    }
+   ]
+  },
+  "yo->en": {
+   "chrf++": 53.9,
+   "chrf++_nomarks": 53.9,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.",
+     "ref": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "hyp": "Romanticism often draws its traditions from the writings of authors such as Goethe, Fichte, and Schlegel."
+    },
+    {
+     "src": "Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.",
+     "ref": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "hyp": "He did not specify an amount for the package, saying they would do so based on the performance of China’s economy."
+    },
+    {
+     "src": "Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.",
+     "ref": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "hyp": "Alloys are basically mixtures of two or more metals. Bear in mind that there are many elements on the periodic table."
+    }
+   ]
+  }
+ },
+ "cost_usd": 0.7873
+}

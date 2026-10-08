@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naija Eval</title>
+<meta name="description" content="An independent, reproducible scorecard for N-ATLaS, Nigeria's multilingual model, on Hausa, Igbo and Yoruba.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap&subset=latin-ext,vietnamese">
+<style>
+/* Layout: one 880px reading column; a scorecard that goes summary → translation → speech → examples → method. */
+:root {
+  --paper: #f6f7fa;      /* cool pale ground */
+  --panel: #ffffff;
+  --ink: #141a33;        /* indigo-black */
+  --ink-2: #4a5170;
+  --ink-3: #6b7290;
+  --rule: #dfe2ec;
+  --indigo: #3446c4;     /* N-ATLaS, adire indigo */
+  --indigo-wash: #e6e9fb;
+  --ember: #e0662f;      /* Llama 3.1 base */
+  --context: #b9bdca;    /* hosted range / stock Whisper: neutral context, always labelled */
+  --context-ink: #5f6577;
+  --f-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --f-body: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #12141c; --panel: #1a1d28; --ink: #eef0f8; --ink-2: #b8bdd3; --ink-3: #8f95ad; --rule: #2b2f3e;
+    --indigo: #6f7cf0; --indigo-wash: #232a52; --ember: #d8622d; --context: #4a4f60; --context-ink: #a6abbd;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #12141c; --panel: #1a1d28; --ink: #eef0f8; --ink-2: #b8bdd3; --ink-3: #8f95ad; --rule: #2b2f3e;
+  --indigo: #6f7cf0; --indigo-wash: #232a52; --ember: #d8622d; --context: #4a4f60; --context-ink: #a6abbd;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--f-body); margin: 0; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 72px; display: grid; gap: 64px; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 600; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); line-height: 1.05; }
+h2 { font-size: 1.75rem; line-height: 1.15; }
+h3 { font-size: 1.15rem; }
+p { margin: 0; max-width: 65ch; }
+.eyebrow { font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.lede { font-size: 1.2rem; color: var(--ink-2); }
+.muted { color: var(--ink-3); font-size: .92rem; }
+a { color: var(--indigo); text-underline-offset: 3px; }
+section { display: grid; gap: 20px; min-width: 0; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* hero */
+header { display: grid; gap: 18px; }
+.greet { display: flex; flex-wrap: wrap; gap: 8px 22px; font-family: var(--f-display); font-size: 1.15rem; color: var(--indigo); }
+.greet span small { font-family: var(--f-body); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin-left: 6px; }
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; margin-top: 10px; }
+.fig { background: var(--panel); padding: 18px 20px; display: grid; gap: 4px; align-content: start; }
+.fig b { font-family: var(--f-display); font-size: 2.2rem; font-weight: 600; line-height: 1; color: var(--indigo); font-variant-numeric: tabular-nums; }
+.fig span { color: var(--ink-2); font-size: .95rem; }
+
+/* controls */
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; padding: 3px; background: var(--panel); flex-wrap: wrap; }
+.seg button { font: 600 .88rem var(--f-body); border: 0; background: none; color: var(--ink-2); padding: 6px 14px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.seg button:focus-visible, .row:focus-visible, summary:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
+
+/* legend */
+.legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: .9rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 7px; vertical-align: -1px; }
+.legend i.swatch-band { width: 22px; height: 10px; border-radius: 3px; background: var(--context); }
+
+/* translation dumbbell chart */
+.chart { background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; padding: 18px 20px 14px; position: relative; min-width: 0; }
+.rows { display: grid; gap: 4px; }
+.row { display: grid; grid-template-columns: 92px 1fr; align-items: center; gap: 12px; padding: 8px 0; border-radius: 8px; cursor: default; }
+.row:hover .track, .row:focus .track { background: var(--indigo-wash); }
+.dir { font-weight: 600; font-size: .95rem; white-space: nowrap; }
+.dir small { display: block; font-weight: 400; color: var(--ink-3); font-size: .78rem; }
+.track { position: relative; height: 30px; border-radius: 6px; transition: background .15s; }
+.grid-line { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--rule); }
+.band { position: absolute; top: 9px; height: 12px; background: var(--context); border-radius: 4px; }
+.tick { position: absolute; top: 6px; height: 18px; width: 2px; background: var(--context-ink); opacity: .55; border-radius: 1px; }
+.lift { position: absolute; top: 14px; height: 2px; background: var(--indigo); opacity: .45; }
+.dot { position: absolute; top: 7px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; box-shadow: 0 0 0 2px var(--panel); }
+.dot.natlas { background: var(--indigo); }
+.dot.llama { background: var(--ember); }
+.axis { display: grid; grid-template-columns: 92px 1fr; gap: 12px; margin-top: 4px; }
+.axis .scale { position: relative; height: 18px; font-size: .75rem; color: var(--ink-3); }
+.axis .scale span { position: absolute; transform: translateX(-50%); font-variant-numeric: tabular-nums; }
+.axis-title { font-size: .8rem; color: var(--ink-3); text-align: right; margin-top: 2px; }
+.direct { position: absolute; top: -2px; font-size: .75rem; font-weight: 700; transform: translateY(-100%); white-space: nowrap; }
+
+/* tooltip */
+.tip { position: absolute; z-index: 5; pointer-events: none; background: var(--ink); color: var(--paper); border-radius: 10px; padding: 10px 12px; font-size: .85rem; min-width: 210px; box-shadow: 0 8px 24px rgb(0 0 0 / .18); }
+.tip h4 { margin: 0 0 6px; font: 700 .8rem var(--f-body); letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+.tip table { border-collapse: collapse; width: 100%; }
+.tip td { padding: 1px 0; }
+.tip td:last-child { text-align: right; font-variant-numeric: tabular-nums; padding-left: 14px; }
+.tip tr.hl td { font-weight: 700; }
+
+/* ASR bars */
+.asr { display: grid; gap: 18px; }
+.lang { display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: center; }
+.bars { display: grid; gap: 5px; position: relative; }
+.bar-row { position: relative; height: 22px; }
+.bar { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; }
+.bar.natlas { background: var(--indigo); }
+.bar.whisper { background: var(--context); }
+.bar-val { position: absolute; top: 50%; transform: translateY(-50%); font-size: .82rem; font-weight: 700; padding-left: 8px; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink); }
+.bar-val.none { padding-left: 0; font-weight: 400; color: var(--ink-3); font-style: italic; }
+.cap { position: absolute; top: -6px; bottom: -6px; width: 0; border-left: 1.5px dashed var(--ink-3); }
+.cap-label { position: absolute; top: -22px; font-size: .72rem; color: var(--ink-3); transform: translateX(-100%); padding-right: 6px; white-space: nowrap; }
+
+/* examples */
+.ex-card { background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
+.ex-head { padding: 16px 20px; display: grid; gap: 10px; border-bottom: 1px solid var(--rule); }
+.ex-label { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.ex-src { font-family: var(--f-display); font-size: 1.15rem; line-height: 1.4; }
+.ex-ref { color: var(--ink-2); }
+.ex-list { display: grid; }
+.ex-item { display: grid; grid-template-columns: 170px 1fr; gap: 14px; padding: 12px 20px; border-bottom: 1px solid var(--rule); }
+.ex-item:last-child { border-bottom: 0; }
+.ex-item.hl { background: var(--indigo-wash); }
+.ex-name { font-weight: 600; font-size: .92rem; }
+.ex-name small { display: block; font-weight: 400; color: var(--ink-3); font-size: .8rem; font-variant-numeric: tabular-nums; }
+.ex-out { min-width: 0; overflow-wrap: anywhere; }
+
+/* table + method */
+details { background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; }
+summary { cursor: pointer; padding: 14px 20px; font-weight: 600; }
+.tbl { overflow-x: auto; padding: 0 20px 16px; }
+table.scores { border-collapse: collapse; width: 100%; font-size: .92rem; min-width: 640px; }
+table.scores th, table.scores td { text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+table.scores th:first-child, table.scores td:first-child { text-align: left; }
+table.scores th { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+table.scores tr.hl td { font-weight: 700; color: var(--indigo); }
+ul.plain { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; max-width: 65ch; }
+.code { background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 18px; overflow-x: auto; font: 400 .9rem/1.7 var(--f-body); white-space: pre; color: var(--ink-2); }
+footer { border-top: 1px solid var(--rule); padding-top: 22px; display: grid; gap: 8px; }
+
+@media (max-width: 560px) {
+  .row, .axis, .lang { grid-template-columns: 64px 1fr; gap: 8px; }
+  .dir small { display: none; }
+  .ex-item { grid-template-columns: 1fr; gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<script id="data" type="application/json">{"mt":[{"label":"sonnet55","name":"Claude Sonnet 5.5","run":"hosted","n":100,"scores":{"en->ha":51.7,"ha->en":67.2,"en->ig":40.7,"ig->en":60.4,"en->yo":32.3,"yo->en":57.1},"scores_nomarks":{"en->ha":51.7,"ha->en":67.2,"en->ig":43.5,"ig->en":60.4,"en->yo":42.0,"yo->en":57.1},"avg":51.6,"cost_usd":0.6232,"examples":{"en->ha":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","hyp":"Romanticism ya ƙunshi babban ɓangare na tunanin cewa al'ada ce ke ƙayyade halayen mutum da rayuwarsa (cultural determinism), wanda aka samo daga marubuta kamar Goethe, Fichte, da Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","hyp":"Bai bayyana takamaiman adadin rage hayakin ba, yana mai cewa za a yi rage-ragen ne bisa la'akari da yawan kayayyakin da tattalin arzikin kasar Sin ke samarwa."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","hyp":"Gaurayen ƙarafa (alloys) a taƙaice haɗin ƙarafa biyu ne ko fiye. Kada ka manta cewa akwai abubuwa masu yawa a cikin teburin sinadarai na zamani (periodic table)."}],"ha->en":[{"src":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"The system of art and literature produces culture, which writers such as Goethe, Fichte and Schlegel created."},{"src":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not set a figure for the reduction, saying that it would depend on what China's economy produces."},{"src":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"An alloy is a mixture of two or more metals. Do not forget that there are many elements on the periodic table."}],"en->ig":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","hyp":"Romanticism nwere nnukwu akụkụ nke nkwenye na omenala na-ekpebi ihe mmadụ bụ, nke e si n'aka ndị edemede dị ka Goethe, Fichte na Schlegel nweta."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","hyp":"Ọ gbaghị ọnụọgụgụ kpọmkwem maka mkpụmkpụ ndị ahụ, kama ọ sịrị na a ga-eme ha dabere na mmepụta akụ na ụba China."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","hyp":"Ihe e ji metal abụọ ma ọ bụ karịa gwakọta bụ alloy. echefula na ọtụtụ element dị na periodic table."}],"ig->en":[{"src":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"Her/His love had many things concerning the tradition of romanticism, which came from writers such as Goethe, Fichte, and Schlegel."},{"src":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not state the exact rate that would be paid, but said they would look at China's economic performance and then pay accordingly."},{"src":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"Alloys are mixtures of two or more metals. Do not forget that there are many elements on the periodic table."}],"en->yo":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","hyp":"Ìmọ̀ Romanticism ní èròjà ńlá kan ti ìpinnu àṣà (cultural determinism), tí a mú láti ọ̀dọ̀ àwọn òǹkọ̀wé bíi Goethe, Fichte, àti Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","hyp":"Kò dárúkọ iye kan fún àwọn ìdínkù náà, ó sọ pé wọ́n á ṣe wọ́n gẹ́gẹ́ bí iye ohun tí ọrọ̀ ajé orílẹ̀-èdè Ṣáínà ń pèsè."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","hyp":"Àdàlù irin jẹ́ àdàpọ̀ irin méjì tàbí jù bẹ́ẹ̀ lọ ní pàtàkì. Má gbàgbé pé ọ̀pọ̀lọpọ̀ èròjà ni ó wà lórí tábìlì àwọn èròjà (periodic table)."}],"yo->en":[{"src":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"Romanticism often draws its culture from the writings of authors such as Goethe, Fichte, and Schlegel."},{"src":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not state any figure for the piece, saying that it would be done in line with the outcome of China's economy."},{"src":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"Basic alloys are mixtures of two or more metals. Let us not forget that there are many elements on the periodic table."}]}},{"label":"gemini38flash","name":"Gemini 3.8 Flash","run":"hosted","n":100,"scores":{"en->ha":51.0,"ha->en":63.8,"en->ig":43.9,"ig->en":62.6,"en->yo":29.7,"yo->en":53.7},"scores_nomarks":{"en->ha":51.0,"ha->en":63.8,"en->ig":46.7,"ig->en":62.6,"en->yo":41.4,"yo->en":53.7},"avg":50.8,"cost_usd":0.1417,"examples":{"en->ha":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","hyp":"Salon soyayya na Romanticism ya ƙunshi babban ɓangare na ƙaddarar al'adu (cultural determinism), wanda aka samo daga marubuta irin su Goethe, Fichte, da Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","hyp":"Bai bayyana adadin ragin ba, yana mai cewa za a yi su ne bisa la'akari da abin da tattalin arzikin China ya samar."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","hyp":"Gami ainihin cakuda ne na karafa biyu ko fiye da haka. Kada ka manta cewa akwai sinadarai masu yawa a kan teburin sinadarai (periodic table)."}],"ha->en":[{"src":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"An artistic and literary movement that generated culture, created by writers such as Goethe, Fichte, and Schlegel."},{"src":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not set a specific figure for the reduction, saying that it would depend on the output of the Chinese economy."},{"src":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"Alloys are a mixture of two or more metals. Do not forget that there are many elements on the periodic table."}],"en->ig":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","hyp":"Romantisizim nwere nnukwu akụkụ nke nkwenye na omenala na-ekpebi ihe niile, nke e si n'aka ndị odee dị ka Goethe, Fichte, na Schlegel nweta."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","hyp":"O kwupụtaghị ọnụọgụ a ga-eji belata ya, na-ekwu na a ga-eme ha dabere na mmepụta akụ na ụba China."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","hyp":"Ngwakọta ọla (alloys) bụ n'ụzọ bụ isi ngwakọta nke ọla abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ ihe ndị dị n'usoro nchịkọta ihe (periodic table)."}],"ig->en":[{"src":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"His Romanticism had a lot to do with traditional rituals, which originated from writers such as Goethe, Fichte, and Schlegel."},{"src":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not state the exact amount to be paid, but said that payment would be based on China's economic output."},{"src":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"Alloys are combinations of two or more metals. Do not forget that there are many elements on the periodic table."}],"en->yo":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","hyp":"Ìfẹ́-onírònú (Romanticism) ní èròjà ńlá ti ìmọ̀-ìpinnu àṣà, tí a fà yọ láti ọ̀dọ̀ àwọn òǹkọ̀wé bíi Goethe, Fichte, àti Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","hyp":"Kò sọ iye pàtó fún àwọn ìdínkù náà, ó sọ pé a ó ṣe wọ́n dá lórí ìṣújáde ètò ọrọ̀ ajé orílẹ̀-èdè Ṣáínà."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","hyp":"Àwọn àdàpọ̀ irin jẹ́ àpapo irin méjì tàbí jù bẹ́ẹ̀ lọ. Má gbàgbé pé ọ̀pọ̀lọpọ̀ àwọn èròjà ló wà lórí tábìlì àkókò."}],"yo->en":[{"src":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"Romanticism often creates culture from the writings of authors such as Goethe, Fichte, and Schlegel."},{"src":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not specify any amount for the share, stating that it would be determined based on China's economic performance."},{"src":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"Alloys are fundamentally a mixture of two or more metals. Not forgetting that there are many elements on the periodic table."}]}},{"label":"gpt61sol","name":"GPT-6.1 Sol","run":"hosted","n":100,"scores":{"en->ha":51.1,"ha->en":62.2,"en->ig":42.8,"ig->en":62.0,"en->yo":31.3,"yo->en":53.9},"scores_nomarks":{"en->ha":51.1,"ha->en":62.2,"en->ig":45.8,"ig->en":62.0,"en->yo":41.0,"yo->en":53.9},"avg":50.6,"cost_usd":0.7873,"examples":{"en->ha":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","hyp":"Romantiksanci ya ƙunshi babban ɓangare na ra’ayin cewa al’adu ne ke ƙaddara rayuwar ɗan Adam, wanda aka samo daga marubuta irin su Goethe, Fichte, da Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","hyp":"Bai ƙayyade adadin ragin ba, yana mai cewa za a yi ragin ne bisa ga yawan abin da tattalin arzikin Sin ke samarwa."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","hyp":"Gami ainihin cakuda ne na ƙarafa biyu ko fiye. Kada ka manta cewa akwai sinadarai da yawa a kan jadawalin sinadarai."}],"ha->en":[{"src":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"The artistic and literary framework for cultural production, developed by writers such as Goethe, Fichte, and Schlegel."},{"src":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not specify a figure for the reduction, saying it would depend on China’s economic output."},{"src":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"An alloy is a combination of two or more metals. Remember that there are many elements on the periodic table."}],"en->ig":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","hyp":"Romantisizim nwere nnukwu akụkụ nke echiche na omenala na-ekpebi omume mmadụ, nke sitere n’aka ndị ode akwụkwọ dịka Goethe, Fichte na Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","hyp":"O kwughị ókè mbelata ndị ahụ ga-eru, na-ekwu na a ga-eme ha dabere na mmepụta akụ na ụba China."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","hyp":"Alọị bụ ngwakọta ọla abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ elementi na tebụl oge."}],"ig->en":[{"src":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"His romanticism had much to do with the celebration of tradition, drawing on writers such as Goethe, Fichte, and Schlegel."},{"src":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not specify the amount to be paid, but said it would be based on China’s economic output."},{"src":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"Alloys are mixtures of two or more metals. Remember that there are many elements in the periodic table."}],"en->yo":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","hyp":"Rómántísísìmù ní apá ńlá kan tí ó dá lórí ìgbàgbọ́ pé àṣà ló ń pinnu ìwà ènìyàn, èyí tí a fà yọ láti inú iṣẹ́ àwọn òǹkọ̀wé bíi Goethe, Fichte, àti Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","hyp":"Kò sọ iye pàtó fún àwọn ìdínkù náà, ó ní a ó ṣe wọ́n ní ìbámu pẹ̀lú ìwọ̀n ohun tí ètò ọrọ̀ ajé Ṣáínà ń mú jáde."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","hyp":"Àwọn àdàlù irin jẹ́ àpapọ̀ irin méjì tàbí jù bẹ́ẹ̀ lọ ní pàtàkì. Má gbàgbé pé ọ̀pọ̀ èròjà ló wà lórí tábìlì ìgbàkọọkan."}],"yo->en":[{"src":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"Romanticism often draws its traditions from the writings of authors such as Goethe, Fichte, and Schlegel."},{"src":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not specify an amount for the package, saying they would do so based on the performance of China’s economy."},{"src":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"Alloys are basically mixtures of two or more metals. Bear in mind that there are many elements on the periodic table."}]}},{"label":"haiku55","name":"Claude Haiku 5.5","run":"hosted","n":100,"scores":{"en->ha":50.0,"ha->en":57.1,"en->ig":37.8,"ig->en":44.8,"en->yo":29.6,"yo->en":46.0},"scores_nomarks":{"en->ha":50.0,"ha->en":57.1,"en->ig":40.3,"ig->en":44.8,"en->yo":41.2,"yo->en":46.0},"avg":44.2,"cost_usd":0.0329,"examples":{"en->ha":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","hyp":"Romantisizm yana da babban sashe na tsarin ƙaddarar al'adu (cultural determinism), wanda aka samo daga marubuta irin su Goethe, Fichte, da Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","hyp":"Bai ƙayyade adadin rage-rage ba, yana mai cewa za a yi su ne bisa ga yawan tattalin arzikin China."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","hyp":"Ana iya cewa ƙarfe-ƙarfe (alloys) haɗin ƙarfe biyu ko fiye ne. Kada ka manta cewa akwai elements da yawa a cikin teburin periodic."}],"ha->en":[{"src":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"\"The system of art and literature is the production of culture, which writers such as Goethe, Fichte, and Schlegel produced.\""},{"src":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not give any specific figure for the decline, saying that this would depend on what China's economy produces for export."},{"src":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"An alloy is a combination of two or more metals. Do not forget that there are many elements on the periodic table."}],"en->ig":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","hyp":"Romanticism nwere otu akụkụ buru ibu nke ihe omume omenala, nke sitere n'aka ndị edemede dị ka Goethe, Fichte, na Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","hyp":"O ghọtaghị ọnụọgụ ọ bụla maka ihe ndakọ ahụ, kama ọ kwuru na a ga-eme ha dabere na mmepụta akụ na ụba China."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","hyp":"Alloys bu ihe a na-akpọ ngwakọta nke ọla abụọ ma ọ bụ karịa. Chetanụ na enwere ọtụtụ ihe na tebụl oge (periodic table)."}],"ig->en":[{"src":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"Her love has many things concerning cultural practices, which come from the hands of writers such as Goethe, Fichte, and Schlegel."},{"src":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"The sentence says: \"The amount to be paid is large, but it is said that the Chinese economic output will be looked at and then the payment made.\""},{"src":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"Alloys are usually made by mixing two or more metals. Don't forget that there are many elements in the periodic table."}],"en->yo":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","hyp":"Romanticism ní èròjà púpọ̀ ti ìpinnu àṣà (cultural determinism), tí a fà yọ láti ọ̀dọ̀ àwọn òǹkọ̀wé bíi Goethe, Fichte, àti Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","hyp":"Kò sọ iye tí wọn yóò gé, ó sọ pé ìgé náà yóò dá lórí iye ọrọ̀ ajé China tí ó ń mú jáde."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","hyp":"Àwọn àdàpọ̀ irin (alloys) jẹ́ ìdàpọ̀ irin méjì tàbí jù bẹ́ẹ̀ lọ. Má ṣe gbàgbé pé ọ̀pọ̀lọpọ̀ èròjà ló wà lórí tábìlì àkọ́kọ́ ti àwọn èròjà (periodic table)."}],"yo->en":[{"src":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"Romanticism emerged from the works of writers such as Goethe, Fichte, and Schlegel."},{"src":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"There was no stated figure for the piece; it was said that they would do it in line with the economic outcome of China's land..."},{"src":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"Alloys are mixtures of two or more metals. Without forgetting that many of them are found on the periodic table."}]}},{"label":"natlas","name":"N-ATLaS","run":"local · 4-bit","n":100,"scores":{"en->ha":47.4,"ha->en":51.2,"en->ig":37.1,"ig->en":44.2,"en->yo":24.5,"yo->en":37.6},"scores_nomarks":{"en->ha":47.4,"ha->en":51.2,"en->ig":39.7,"ig->en":44.3,"en->yo":35.6,"yo->en":37.6},"avg":40.3,"cost_usd":null,"examples":{"en->ha":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","hyp":"Kadaici ya samu wani babban bangare na ƙa'idar ƙa'idar al'adu, wanda aka samo daga marubuta irin su Goethe, Fichte, da Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","hyp":"Ya kasa bayar da adadi ga yanke, yana mai cewa za a yi su bisa ga fitar da tattalin arzikin kasar Sin."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","hyp":"Alloys wani nau'in hadin gwiwa ne na biyu ko fiye da karafa. Kar a manta cewa akwai abubuwa da yawa a kan teburin lokaci-lokaci."}],"ha->en":[{"src":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"The technological and literary framework for creating culture, which authors such as Gothe, Fichte, and Schlegel had previously developed."},{"src":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not set any figure for the reduction, saying it would depend on what China's economy exports."},{"src":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"The chart is a mixture of two or more metals. Don't forget that there are many things on the time chart."}],"en->ig":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","hyp":"Mkpụrụ obi ọmịiko nwere nnukwu akụkụ nke ịdabere na ọdịnala, sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","hyp":"Ọ dịghị mgbe ọ kpọrọ ọnụ ọgụgụ ndị a ga-ebipụ, na-ekwu na a ga-eme ha dabere na mmepụta akụ na ụba China."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","hyp":"Ọ bụ isi na alloys bụ ngwakọta nke abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ ihe na tebụl oge."}],"ig->en":[{"src":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"Romanticism was characterized by a focus on emotion, nature, and individualism, as advocated by writers such as Goethe, Fichte, and Schlegel."},{"src":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not mention a specific date for the increase, but rather stated that it would be contingent upon the economic output of China."},{"src":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"The children are the nails of the earth, and there are many workmen at the table of the Lord."}],"en->yo":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","hyp":"Ìfẹ́ ọ̀fẹ́ ní ìyàtọ̀ ńlá kan láti ọ̀dọ̀ àwọn onkọ̀wé bíi Goethe, Fichte, àti Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","hyp":"Ó fọwọ́ sí i pé kò ní sọ àwọn nọ́ńbà tí wọ́n máa gé, ní sísọ pé wọ́n máa ṣe é gẹ́gẹ́ bí ìpíndọ́gba ètò ọrọ̀ ajé Ṣáínà."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","hyp":"Àlòkòsì jẹ́ ní ìpíndọ́gba àwọn méta méjì tàbí ju bẹ́ẹ̀ lọ. Maṣe gbagbe pe ọpọlọpọ awọn eroja wa lori tabili akoko."}],"yo->en":[{"src":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"Romanticism sought to break away from the conventions of the writings of the critics Goethe, Fichte and Schlegel."},{"src":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He did not specify any amount for the egg, saying that it would be made according to the economic situation of China."},{"src":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"The aristocracy is a mixture of two or more classes. Do not believe that there are many low-ranking people on the throne."}]}},{"label":"llama31","name":"Llama 3.1 8B Instruct","run":"local · 4-bit","n":100,"scores":{"en->ha":22.7,"ha->en":40.1,"en->ig":17.0,"ig->en":33.7,"en->yo":7.6,"yo->en":28.3},"scores_nomarks":{"en->ha":22.7,"ha->en":40.1,"en->ig":18.5,"ig->en":33.8,"en->yo":11.0,"yo->en":28.4},"avg":24.9,"cost_usd":null,"examples":{"en->ha":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","hyp":"Romantisizma ya yi daidai a cikin ɗan adam da al'ada, daga masu rubutu kamar Goethe, Fichte, da Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","hyp":"Ya ce ba ya yi kuskure ba tare da kuskure, ya ce za a yi kuskure da kuskure da kudin shiga ta China."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","hyp":"Alloys ne da kasa ya duka ko fiye da biyu ko fiye da manya aikin metal. Ba za ki kasa da cewa akwai manya aikin periodic."}],"ha->en":[{"src":"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"The system of art and literature which produced culture, which writers like Gothe, Fichte and Schlegel produced."},{"src":"Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"He has not set a specific number for the trade, where he said that whatever will be connected with the goods to be exported from China."},{"src":"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"A constellation is made up of two or fewer stars at most. He said there are many things on the chart at a time-by-time."}],"en->ig":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","hyp":"Romantizmu nwere ụdị dị ukwuu nke ọchịchị ụlọala, a na-eme ka ụdị a dị ka ndị bekee dị ka Goethe, Fichte, na Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","hyp":"Otu n'ụlọ ọrụ ahụ kọrọ ụdị, kwuru na ụdị ahụ ga-eme site na ọnụ ọgụgụ China's economic output."},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","hyp":"Alloys bụ otu n'ime nchọta nke abụọ n'ime ihe ndị ọzọ n'ime metal.  Chọọ mgbu na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na"}],"ig->en":[{"src":"Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"The desire for a unique, profound, and traditional understanding of the human soul, which comes from the pens of writers like Goethe, Fichte, and Schlegel."},{"src":"O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"It is not a small thing to do, for he said that he will take a loan and invest in China to pay back."},{"src":"Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"The children of the house are the ones who bring people together in a gathering of two or more. They are the ones who have many dishes on the table."}],"en->yo":[{"src":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","ref":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","hyp":"Romansimu ni won ni won loju awon orisirisi, won si won loju awon akiti si Goethe, Fichte, ati Schlegel."},{"src":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","ref":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","hyp":"O ti kọ ẹgbẹ ẹrọ, ọ ti pẹ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹrọ ẹgbẹ ẹ"},{"src":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","ref":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","hyp":"Àlé àlé ni ẹ̀dá àpapọ̀ àtọ̀nà àtọ̀nà ọ̀kan ọ̀kan.  Lẹ́nu ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹni ẹ ẹni ẹ"}],"yo->en":[{"src":"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.","ref":"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.","hyp":"Romanticism but on Sunday took culture from the writers of the West, Fichte, and Schlegel."},{"src":"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.","ref":"He did not set a figure for the cuts, saying they will be made based on China's economic output.","hyp":"No one can predict the outcome of that war, they said they would win it in a short time, but the war in China was a long one."},{"src":"Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.","ref":"Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.","hyp":"The elderly are like a broken calabash, either empty or full. Many people are like the time of day, either morning or night."}]}}],"asr":{"ha_ng":{"n":100,"n-atlas":{"rtf":0.026,"wer":38.5,"cer":18.4,"wer_nomarks":38.5,"cer_nomarks":18.4},"whisper-small":{"rtf":0.018,"wer":92.1,"cer":39.6,"wer_nomarks":92.1,"cer_nomarks":39.6}},"ig_ng":{"n":100,"n-atlas":{"rtf":0.028,"wer":45.4,"cer":17.9,"wer_nomarks":39.4,"cer_nomarks":14.5}},"yo_ng":{"n":100,"n-atlas":{"rtf":0.036,"wer":64.7,"cer":24.6,"wer_nomarks":33.5,"cer_nomarks":10.2},"whisper-small":{"rtf":0.039,"wer":113.8,"cer":84.0,"wer_nomarks":112.8,"cer_nomarks":76.9}}},"pairs":["en->ha","ha->en","en->ig","ig->en","en->yo","yo->en"]}</script>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Extrafemi Labs · First pass, 8 October 2026</div>
+    <h1>Naija Eval</h1>
+    <p class="lede">Nigeria's own language model, N-ATLaS, tested in the open. We compare it with the Llama model it was built from and with four hosted models, on Hausa, Igbo and Yoruba speech and translation.</p>
+    <div class="greet" aria-label="Greetings in the three languages tested">
+      <span lang="ha">Sannu<small>Hausa</small></span>
+      <span lang="ig">Ndewo<small>Igbo</small></span>
+      <span lang="yo">Ẹ n lẹ<small>Yoruba</small></span>
+    </div>
+    <div class="figs" id="figs"></div>
+  </header>
+
+  <section aria-labelledby="mt-h">
+    <div class="eyebrow">Translation</div>
+    <h2 id="mt-h">The Nigerian fine-tune works, but hosted models still lead</h2>
+    <p>Each row is one translation direction, scored with chrF++ on 100 FLORES sentences. The orange dot is plain Llama 3.1 8B, the line is what Nigerian training added, and the indigo dot is N-ATLaS. The grey bar spans the four hosted models.</p>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Scoring">
+        <button type="button" id="mt-marks" aria-pressed="true">As written</button>
+        <button type="button" id="mt-nomarks" aria-pressed="false">Ignore tone marks</button>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--ember)"></i>Llama 3.1 8B (base)</span>
+      <span><i style="background:var(--indigo)"></i>N-ATLaS</span>
+      <span><i class="swatch-band"></i>Hosted models, lowest to highest</span>
+    </div>
+    <div class="chart" id="mt-chart">
+      <div class="rows" id="mt-rows"></div>
+      <div class="axis"><div></div><div class="scale" id="mt-scale"></div></div>
+      <div class="axis-title">chrF++ (0–100, higher is better)</div>
+    </div>
+    <details>
+      <summary>All translation scores as a table</summary>
+      <div class="tbl"><table class="scores" id="mt-table"></table></div>
+    </details>
+  </section>
+
+  <section aria-labelledby="asr-h">
+    <div class="eyebrow">Speech to text</div>
+    <h2 id="asr-h">N-ATLaS hears Nigerian languages that stock Whisper can't</h2>
+    <p>Word error rate on 100 FLEURS clips per language: the share of words the transcript gets wrong, so lower is better. Above 100% means the model added more wrong words than the sentence had. Stock Whisper Small has no Igbo at all.</p>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Scoring">
+        <button type="button" id="asr-marks" aria-pressed="true">As written</button>
+        <button type="button" id="asr-nomarks" aria-pressed="false">Ignore tone marks</button>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--indigo)"></i>N-ATLaS speech model</span>
+      <span><i class="swatch-band"></i>Stock Whisper Small</span>
+    </div>
+    <div class="chart"><div class="asr" id="asr"></div></div>
+    <p class="muted">Yoruba changes most with the toggle. The N-ATLaS Yoruba model writes tone marks on some clips and drops them on others, so most of its errors as written are missing or wrong marks rather than wrong words.</p>
+  </section>
+
+  <section aria-labelledby="ex-h">
+    <div class="eyebrow">Read the outputs</div>
+    <h2 id="ex-h">See what the scores mean</h2>
+    <p>The same sentence through every model. Pick a direction and an example.</p>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Direction" id="ex-dirs"></div>
+      <div class="seg" role="group" aria-label="Example" id="ex-nums"></div>
+    </div>
+    <div class="ex-card" id="ex-card"></div>
+  </section>
+
+  <section aria-labelledby="find-h">
+    <div class="eyebrow">What we found</div>
+    <h2 id="find-h">Findings</h2>
+    <ul class="plain">
+      <li><b>The fine-tune is real.</b> N-ATLaS beats its Llama 3.1 base by <span id="f-lift"></span> chrF++ on average. English to Yoruba goes from 7.6 to 24.5.</li>
+      <li><b>It writes Hausa close to the best.</b> English to Hausa scores 47.4, against 51.7 for the top hosted model.</li>
+      <li><b>It is weakest translating into English.</b> Hausa to English scores 51.2 against 67.2; Yoruba to English 37.6 against 57.1.</li>
+      <li><b>Yoruba is hard for every model.</b> No model passes 33 for English to Yoruba, and ignoring tone marks lifts every model by about 10 points.</li>
+      <li><b>The cheapest hosted model still wins on quality.</b> Claude Haiku 5.5 beat N-ATLaS in all six directions; its 600 translations cost $0.03.</li>
+      <li><b>N-ATLaS's advantage is where it runs.</b> It runs offline on a laptop or a server in Nigeria, with no text or audio leaving the machine.</li>
+      <li><b>One correction to the model card.</b> N-ATLaS is built on Llama 3.1 8B (its config uses Llama 3.1's rope scaling and 128k positions), not Llama 3.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="meth-h">
+    <div class="eyebrow">Method</div>
+    <h2 id="meth-h">How we tested, and the limits</h2>
+    <ul class="plain">
+      <li><b>Data.</b> Google's FLEURS test set: read speech of FLORES sentences, which are also aligned across languages for translation. CC BY-SA 4.0.</li>
+      <li><b>Speech.</b> NCAIR1 Hausa, Igbo and Yoruba ASR models (fine-tuned Whisper Small) against stock openai/whisper-small, greedy decoding.</li>
+      <li><b>Translation.</b> One fixed prompt for every model, temperature 0, first line of output kept. N-ATLaS and Llama 3.1 ran locally in 4-bit on an Apple M5 with MLX; hosted models ran through OpenRouter.</li>
+      <li><b>Sample size.</b> 100 items per language and direction. This is a first pass, not a leaderboard.</li>
+      <li><b>Quantization.</b> The 4-bit local models may score a point or two below full precision.</li>
+      <li><b>Contamination.</b> FLEURS and FLORES are public, so any model here may have seen them in training.</li>
+      <li><b>Real speech.</b> FLEURS is clean read speech with formal vocabulary. Street voice notes will score differently.</li>
+    </ul>
+    <h3>Reproduce it</h3>
+    <div class="code">pip install -r requirements.txt
+hf auth login              # accept the NCAIR1 model terms first
+python eval/fetch.py all   # about 22 GB
+python eval/eval_asr.py 100
+python eval/eval_mt.py models/natlas-4bit natlas 100
+python eval/eval_mt_api.py anthropic/claude-haiku-5.5 haiku55 100
+python eval/summarize.py</div>
+  </section>
+
+  <footer>
+    <p class="muted">N-ATLaS models © Awarri Technologies and the Federal Government of Nigeria, under the N-ATLaS licence. Naija Eval does not redistribute any model weights. FLEURS © Google, FLORES © Meta and OLDI, both CC BY-SA 4.0.</p>
+    <p class="muted">An Extrafemi Labs build · <a href="https://labs.extrafemi.com">labs.extrafemi.com</a></p>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const D = JSON.parse(document.getElementById('data').textContent);
+  const PAIRS = D.pairs;
+  const LN = { en: 'English', ha: 'Hausa', ig: 'Igbo', yo: 'Yoruba' };
+  const pairName = p => { const [a, b] = p.split('->'); return `${LN[a]} → ${LN[b]}`; };
+  const pairShort = p => p.replace('->', '→');
+  const byLabel = Object.fromEntries(D.mt.map(m => [m.label, m]));
+  const natlas = byLabel.natlas, llama = byLabel.llama31;
+  const hosted = D.mt.filter(m => m.run === 'hosted');
+  const fmt = v => v.toFixed(1);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  /* headline figures */
+  const best = D.mt[0];
+  const lift = natlas.avg - llama.avg;
+  document.getElementById('f-lift').textContent = fmt(lift);
+  const ha = D.asr.ha_ng;
+  document.getElementById('figs').innerHTML = [
+    [`+${fmt(lift)}`, `chrF++ gained over its Llama 3.1 base, averaged across six directions`],
+    [`${Math.round(natlas.avg / best.avg * 100)}%`, `of the best hosted model's translation score (${fmt(natlas.avg)} vs ${fmt(best.avg)}, ${esc(best.name)})`],
+    [`${fmt(ha['n-atlas'].wer)}%`, `of Hausa words wrong in speech-to-text, against ${fmt(ha['whisper-small'].wer)}% for stock Whisper`],
+  ].map(([b, s]) => `<div class="fig"><b>${b}</b><span>${s}</span></div>`).join('');
+
+  /* translation chart */
+  const MAX = 70, pct = v => `${Math.min(v, MAX) / MAX * 100}%`;
+  let mtKey = 'scores';
+  const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true;
+  document.getElementById('mt-chart').appendChild(tip);
+
+  function drawMT() {
+    const rows = PAIRS.map((p, i) => {
+      const hs = hosted.map(m => m[mtKey][p]);
+      const lo = Math.min(...hs), hi = Math.max(...hs);
+      const l = llama[mtKey][p], n = natlas[mtKey][p];
+      const grid = [10, 20, 30, 40, 50, 60].map(g => `<div class="grid-line" style="left:${pct(g)}"></div>`).join('');
+      const ticks = hs.map(v => `<div class="tick" style="left:${pct(v)}"></div>`).join('');
+      const labels = i === 0 ? `<div class="direct" style="left:${pct(l)};color:var(--ember);transform:translate(-50%,-100%)">Llama</div>
+        <div class="direct" style="left:${pct(n)};color:var(--indigo);transform:translate(-50%,-100%)">N-ATLaS</div>
+        <div class="direct" style="left:calc(${pct(hi)} + 8px);top:15px;color:var(--context-ink);transform:translateY(-50%)">Hosted</div>` : '';
+      return `<div class="row" tabindex="0" data-pair="${p}" aria-label="${pairName(p)}: Llama ${fmt(l)}, N-ATLaS ${fmt(n)}, hosted ${fmt(lo)} to ${fmt(hi)}">
+        <div class="dir">${pairShort(p)}<small>${pairName(p)}</small></div>
+        <div class="track">${grid}
+          <div class="band" style="left:${pct(lo)};width:calc(${pct(hi)} - ${pct(lo)})"></div>${ticks}
+          <div class="lift" style="left:${pct(l)};width:calc(${pct(n)} - ${pct(l)})"></div>
+          <div class="dot llama" style="left:${pct(l)}"></div>
+          <div class="dot natlas" style="left:${pct(n)}"></div>${labels}
+        </div></div>`;
+    }).join('');
+    const box = document.getElementById('mt-rows');
+    box.innerHTML = rows;
+    box.style.paddingTop = '18px';
+    document.getElementById('mt-scale').innerHTML = [0, 10, 20, 30, 40, 50, 60, 70].map(g => `<span style="left:${pct(g)}">${g}</span>`).join('');
+    box.querySelectorAll('.row').forEach(r => {
+      const show = () => {
+        const p = r.dataset.pair;
+        const list = [...D.mt].sort((a, b) => b[mtKey][p] - a[mtKey][p]);
+        tip.innerHTML = `<h4>${pairName(p)}</h4><table>${list.map(m => `<tr class="${m.label === 'natlas' ? 'hl' : ''}"><td>${esc(m.name)}</td><td>${fmt(m[mtKey][p])}</td></tr>`).join('')}</table>`;
+        tip.hidden = false;
+        const c = document.getElementById('mt-chart').getBoundingClientRect(), rr = r.getBoundingClientRect();
+        const below = rr.bottom - c.top + 6;
+        tip.style.top = (below + tip.offsetHeight > c.height ? rr.top - c.top - tip.offsetHeight - 6 : below) + 'px';
+        tip.style.left = Math.max(10, Math.min(c.width - tip.offsetWidth - 10, rr.left - c.left + 100)) + 'px';
+      };
+      const hide = () => { tip.hidden = true; };
+      r.addEventListener('mouseenter', show); r.addEventListener('focus', show);
+      r.addEventListener('mouseleave', hide); r.addEventListener('blur', hide);
+    });
+    document.getElementById('mt-table').innerHTML =
+      `<tr><th>Model</th><th>Runs</th>${PAIRS.map(p => `<th>${pairShort(p)}</th>`).join('')}<th>Avg</th></tr>` +
+      D.mt.map(m => {
+        const v = PAIRS.map(p => m[mtKey][p]);
+        return `<tr class="${m.label === 'natlas' ? 'hl' : ''}"><td>${esc(m.name)}</td><td>${esc(m.run)}</td>${v.map(x => `<td>${fmt(x)}</td>`).join('')}<td>${fmt(v.reduce((a, b) => a + b, 0) / v.length)}</td></tr>`;
+      }).join('');
+  }
+
+  /* ASR chart */
+  let asrKey = 'wer';
+  const AMAX = 120, apct = v => `${Math.min(v, AMAX) / AMAX * 100}%`;
+  function drawASR() {
+    const langs = [['ha_ng', 'Hausa'], ['ig_ng', 'Igbo'], ['yo_ng', 'Yoruba']];
+    document.getElementById('asr').innerHTML = langs.map(([code, name], i) => {
+      const a = D.asr[code], n = a['n-atlas'][asrKey], w = a['whisper-small'] ? a['whisper-small'][asrKey] : null;
+      const nat = `<div class="bar-row"><div class="bar natlas" style="width:${apct(n)}"></div><div class="bar-val" style="left:${apct(n)}">${fmt(n)}%</div></div>`;
+      const wh = w == null
+        ? `<div class="bar-row"><div class="bar-val none" style="left:0">Stock Whisper has no Igbo</div></div>`
+        : `<div class="bar-row"><div class="bar whisper" style="width:${apct(w)}"></div><div class="bar-val" style="left:${apct(w)}">${fmt(w)}%</div></div>`;
+      const cap = i === 0 ? `<div class="cap" style="left:${apct(100)}"><span class="cap-label">100%: as many errors as words</span></div>` : `<div class="cap" style="left:${apct(100)}"></div>`;
+      return `<div class="lang" style="${i === 0 ? 'margin-top:18px' : ''}"><div class="dir">${name}</div><div class="bars">${cap}${nat}${wh}</div></div>`;
+    }).join('');
+  }
+
+  /* examples */
+  let exPair = 'en->ha', exIdx = 0;
+  function drawEx() {
+    document.getElementById('ex-dirs').innerHTML = PAIRS.map(p => `<button type="button" aria-pressed="${p === exPair}" data-p="${p}">${pairShort(p)}</button>`).join('');
+    const n = natlas.examples[exPair].length;
+    document.getElementById('ex-nums').innerHTML = Array.from({ length: n }, (_, i) => `<button type="button" aria-pressed="${i === exIdx}" data-i="${i}">Example ${i + 1}</button>`).join('');
+    const e0 = natlas.examples[exPair][exIdx];
+    const [src, tgt] = exPair.split('->');
+    document.getElementById('ex-card').innerHTML =
+      `<div class="ex-head"><div class="ex-label">${LN[src]} source</div><div class="ex-src" lang="${src}">${esc(e0.src)}</div>
+        <div class="ex-label">Human ${LN[tgt]} reference</div><div class="ex-ref" lang="${tgt}">${esc(e0.ref)}</div></div>
+       <div class="ex-list">${D.mt.map(m => `<div class="ex-item ${m.label === 'natlas' ? 'hl' : ''}">
+          <div class="ex-name">${esc(m.name)}<small>chrF++ ${fmt(m.scores[exPair])} on this direction</small></div>
+          <div class="ex-out" lang="${tgt}">${esc(m.examples[exPair][exIdx].hyp || '(no output)')}</div></div>`).join('')}</div>`;
+    document.querySelectorAll('#ex-dirs button').forEach(b => b.onclick = () => { exPair = b.dataset.p; exIdx = 0; drawEx(); });
+    document.querySelectorAll('#ex-nums button').forEach(b => b.onclick = () => { exIdx = +b.dataset.i; drawEx(); });
+  }
+
+  /* toggles */
+  function toggle(onId, offId, fn) {
+    document.getElementById(onId).onclick = () => fn(true);
+    document.getElementById(offId).onclick = () => fn(false);
+  }
+  toggle('mt-marks', 'mt-nomarks', marks => {
+    mtKey = marks ? 'scores' : 'scores_nomarks';
+    document.getElementById('mt-marks').setAttribute('aria-pressed', marks);
+    document.getElementById('mt-nomarks').setAttribute('aria-pressed', !marks);
+    drawMT();
+  });
+  toggle('asr-marks', 'asr-nomarks', marks => {
+    asrKey = marks ? 'wer' : 'wer_nomarks';
+    document.getElementById('asr-marks').setAttribute('aria-pressed', marks);
+    document.getElementById('asr-nomarks').setAttribute('aria-pressed', !marks);
+    drawASR();
+  });
+
+  drawMT(); drawASR(); drawEx();
+})();
+</script>
+
+</body>
+</html>

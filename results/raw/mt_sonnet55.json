@@ -1,0 +1,140 @@
+{
+ "model": "sonnet55",
+ "openrouter_id": "anthropic/claude-sonnet-5.5",
+ "n": 100,
+ "pairs": {
+  "en->ha": {
+   "chrf++": 51.7,
+   "chrf++_nomarks": 51.7,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "ref": "Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.",
+     "hyp": "Romanticism ya ƙunshi babban ɓangare na tunanin cewa al'ada ce ke ƙayyade halayen mutum da rayuwarsa (cultural determinism), wanda aka samo daga marubuta kamar Goethe, Fichte, da Schlegel."
+    },
+    {
+     "src": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "ref": "Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.",
+     "hyp": "Bai bayyana takamaiman adadin rage hayakin ba, yana mai cewa za a yi rage-ragen ne bisa la'akari da yawan kayayyakin da tattalin arzikin kasar Sin ke samarwa."
+    },
+    {
+     "src": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "ref": "Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.",
+     "hyp": "Gaurayen ƙarafa (alloys) a taƙaice haɗin ƙarafa biyu ne ko fiye. Kada ka manta cewa akwai abubuwa masu yawa a cikin teburin sinadarai na zamani (periodic table)."
+    }
+   ]
+  },
+  "ha->en": {
+   "chrf++": 67.2,
+   "chrf++_nomarks": 67.2,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.",
+     "ref": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "hyp": "The system of art and literature produces culture, which writers such as Goethe, Fichte and Schlegel created."
+    },
+    {
+     "src": "Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.",
+     "ref": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "hyp": "He did not set a figure for the reduction, saying that it would depend on what China's economy produces."
+    },
+    {
+     "src": "Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.",
+     "ref": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "hyp": "An alloy is a mixture of two or more metals. Do not forget that there are many elements on the periodic table."
+    }
+   ]
+  },
+  "en->ig": {
+   "chrf++": 40.7,
+   "chrf++_nomarks": 43.5,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "ref": "Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.",
+     "hyp": "Romanticism nwere nnukwu akụkụ nke nkwenye na omenala na-ekpebi ihe mmadụ bụ, nke e si n'aka ndị edemede dị ka Goethe, Fichte na Schlegel nweta."
+    },
+    {
+     "src": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "ref": "O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.",
+     "hyp": "Ọ gbaghị ọnụọgụgụ kpọmkwem maka mkpụmkpụ ndị ahụ, kama ọ sịrị na a ga-eme ha dabere na mmepụta akụ na ụba China."
+    },
+    {
+     "src": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "ref": "Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.",
+     "hyp": "Ihe e ji metal abụọ ma ọ bụ karịa gwakọta bụ alloy. echefula na ọtụtụ element dị na periodic table."
+    }
+   ]
+  },
+  "ig->en": {
+   "chrf++": 60.4,
+   "chrf++_nomarks": 60.4,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.",
+     "ref": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "hyp": "Her/His love had many things concerning the tradition of romanticism, which came from writers such as Goethe, Fichte, and Schlegel."
+    },
+    {
+     "src": "O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.",
+     "ref": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "hyp": "He did not state the exact rate that would be paid, but said they would look at China's economic performance and then pay accordingly."
+    },
+    {
+     "src": "Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.",
+     "ref": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "hyp": "Alloys are mixtures of two or more metals. Do not forget that there are many elements on the periodic table."
+    }
+   ]
+  },
+  "en->yo": {
+   "chrf++": 32.3,
+   "chrf++_nomarks": 42.0,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "ref": "Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.",
+     "hyp": "Ìmọ̀ Romanticism ní èròjà ńlá kan ti ìpinnu àṣà (cultural determinism), tí a mú láti ọ̀dọ̀ àwọn òǹkọ̀wé bíi Goethe, Fichte, àti Schlegel."
+    },
+    {
+     "src": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "ref": "Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.",
+     "hyp": "Kò dárúkọ iye kan fún àwọn ìdínkù náà, ó sọ pé wọ́n á ṣe wọ́n gẹ́gẹ́ bí iye ohun tí ọrọ̀ ajé orílẹ̀-èdè Ṣáínà ń pèsè."
+    },
+    {
+     "src": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "ref": "Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.",
+     "hyp": "Àdàlù irin jẹ́ àdàpọ̀ irin méjì tàbí jù bẹ́ẹ̀ lọ ní pàtàkì. Má gbàgbé pé ọ̀pọ̀lọpọ̀ èròjà ni ó wà lórí tábìlì àwọn èròjà (periodic table)."
+    }
+   ]
+  },
+  "yo->en": {
+   "chrf++": 57.1,
+   "chrf++_nomarks": 57.1,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.",
+     "ref": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "hyp": "Romanticism often draws its culture from the writings of authors such as Goethe, Fichte, and Schlegel."
+    },
+    {
+     "src": "Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.",
+     "ref": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "hyp": "He did not state any figure for the piece, saying that it would be done in line with the outcome of China's economy."
+    },
+    {
+     "src": "Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.",
+     "ref": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "hyp": "Basic alloys are mixtures of two or more metals. Let us not forget that there are many elements on the periodic table."
+    }
+   ]
+  }
+ },
+ "cost_usd": 0.6232
+}

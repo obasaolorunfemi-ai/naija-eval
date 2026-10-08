@@ -1,0 +1,7 @@
+{
+  // Static site on Cloudflare Workers (static assets only, no Worker script).
+  // Build first: python eval/build_site.py   then: npx wrangler deploy
+  "name": "naija-eval",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./public" }
+}

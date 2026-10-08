@@ -1,0 +1,11 @@
+huggingface_hub>=1.0
+torch
+transformers>=4.45
+soundfile
+librosa
+pandas
+pyarrow
+jiwer
+sacrebleu
+requests
+mlx-lm ; sys_platform == "darwin"

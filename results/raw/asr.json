@@ -1,0 +1,116 @@
+{
+ "ha_ng": {
+  "n": 100,
+  "n-atlas": {
+   "rtf": 0.026,
+   "examples": [
+    [
+     "An kwatanta faretin gine-ginen da ke yin sararin samaniyar Hong Kong da ginshiƙi mai walƙiya wanda aka bayyana ta gaban ruwan Victoria Harbor.",
+     "an kwatanta faretin gine-ginen da ke yin sararin samaniya, hunkunk, da ginshiƙi mai wulƙiya wanda aka bayyana ta gaban ruwan victoria habu."
+    ],
+    [
+     "Aristotle, masanin falsafa ne, yayi tunanin cewa komai ya kunshi cakuda daya ko fiye daga abubuwa hudu. Sun kasance ƙasa, ruwa, iska, da wuta.",
+     "aristotel masanin falsapha ne, yayi tunanin cewa komai ya ƙunshi cakuda ɗaya, ofiyar daga abubuwa huɗu, sun kasance ƙasa, ruwa, iska, da wuta."
+    ],
+    [
+     "Tsibirin na kwanciye 120 km arewa da sashin kasa mai shiga teku. Mafi girma shine King George Island mai dauke da mazauna na Villa Estrellas.",
+     "sibirin nakonci me kilomita da riɗa ashirin arewa da sashin ƙasa mai shiga teku, mafi girma shine king jorgin's island mai ɗauke da mazauna na villa estherilas."
+    ]
+   ],
+   "wer": 38.5,
+   "cer": 18.4,
+   "wer_nomarks": 38.5,
+   "cer_nomarks": 18.4
+  },
+  "whisper-small": {
+   "rtf": 0.018,
+   "examples": [
+    [
+     "An kwatanta faretin gine-ginen da ke yin sararin samaniyar Hong Kong da ginshiƙi mai walƙiya wanda aka bayyana ta gaban ruwan Victoria Harbor.",
+     " Aung kwa tanta ferietun ginaginang deke yung sarulin samania Hong Kong dekin shiki mei wal kiya wan da akabayenata gabung ruwan Victoria Habo."
+    ],
+    [
+     "Aristotle, masanin falsafa ne, yayi tunanin cewa komai ya kunshi cakuda daya ko fiye daga abubuwa hudu. Sun kasance ƙasa, ruwa, iska, da wuta.",
+     " Aris totil masonim falisafani. Yai tina njiwa kome ya kon shi chakuda aya, ofia daga abubu ahu. Sumtas njiye kasa, ruwa, iska, dauta."
+    ],
+    [
+     "Tsibirin na kwanciye 120 km arewa da sashin kasa mai shiga teku. Mafi girma shine King George Island mai dauke da mazauna na Villa Estrellas.",
+     " Se buren na kwanchi mei kilometad rida ashrum ariva dasasin kasa mei shigaat yoku mafi girmashi nekin jodg island mei daw keda mazaw na navila estrilaas."
+    ]
+   ],
+   "wer": 92.1,
+   "cer": 39.6,
+   "wer_nomarks": 92.1,
+   "cer_nomarks": 39.6
+  }
+ },
+ "ig_ng": {
+  "n": 100,
+  "n-atlas": {
+   "rtf": 0.028,
+   "examples": [
+    [
+     "Ka akara Rossby na-adị obere karịa, ka arụmarụ na-adịkwu obere nke kpakpando n’ikwanye ugwu nye ụmụ ntụgharị nke ihendọta.",
+     "a kara rosby na adi obere karia karụmarụ na adikwa obere nke gbagbando n'ekwanye ugwu nye ụmụ ntụgharị nke ihe ndọta."
+    ],
+    [
+     "Ka agha dara, mba Britenị jiri ndị agha elu mmiri gbochie ndị Jamani inweta enyemaka",
+     "taa dara! mba britain jiri ndị ahụ elu mmiri gbochie ndị jama na ị nweta enyemaka."
+    ],
+    [
+     "Na mbụ, ọtụtụ n’ime ndị na-anya na-eyi akpụkpọ ụkwụ ọnyịnya ndị nwere kọị kọị na okpuru dị nrọ ma pee mpe.",
+     "na mbụ ọtụtụ n'ime ndị na-anya n'ihi akpụkpọ okwu onye ndị nwere ekwe ekwe na mkpụrụdị mma pempe."
+    ]
+   ],
+   "wer": 45.4,
+   "cer": 17.9,
+   "wer_nomarks": 39.4,
+   "cer_nomarks": 14.5
+  }
+ },
+ "yo_ng": {
+  "n": 100,
+  "n-atlas": {
+   "rtf": 0.036,
+   "examples": [
+    [
+     "Àwọn èyàn ti mọ̀ nípa àwọn kemika pepe bí wúrà, fàdákà àti kọ́pa àtijọ́, torípé a lè rí wọn ní ìṣẹ̀dá ní ipò àdáyéba wọn, kò dẹ̀ le jù láti wú wọn jáda láti inú ilẹ̀ pẹ̀lú irinṣẹ́ àtilẹ̀bá.",
+     "awọn iyantimọ nipa awọn kemika, pepe bii wura, fadaka, ati kọpa atijọ, toripe alerinwọn ni iṣẹda ni ipo adayeba awọn kodẹleju lati wo wọn jada lati inu ilẹ pẹlu irinṣẹ atilẹba"
+    ],
+    [
+     "Àwọn ara Ìrano lo kọ́kọ́ bẹ̀rẹ̀ si ni sin ewure ní bíi ọdún 15,0000 sẹ́yìn ní Oke Sagrosi.",
+     "àwọn ará ìrànà olókọ́kọ́ bẹ̀rẹ̀ sí ní ṣin ewúré níbi ọdún 1500 sẹ́yìn ni ó ké sáá gúrọ́sì"
+    ],
+    [
+     "Fotosintesisi ni ọ̀nà tí àwọn ewé ma n gbà gi ṣe ounje wọn láti orun. Wọ́n dẹ̀ ma n pèsè àbò.",
+     "fọtósíńtẹ́sì sí ní ọ̀nà tí àwọn èwé máa ń gbàgí ṣe oúnjẹ wọn láti ohun, 100 máa ń pé sí àábò."
+    ]
+   ],
+   "wer": 64.7,
+   "cer": 24.6,
+   "wer_nomarks": 33.5,
+   "cer_nomarks": 10.2
+  },
+  "whisper-small": {
+   "rtf": 0.039,
+   "examples": [
+    [
+     "Àwọn èyàn ti mọ̀ nípa àwọn kemika pepe bí wúrà, fàdákà àti kọ́pa àtijọ́, torípé a lè rí wọn ní ìṣẹ̀dá ní ipò àdáyéba wọn, kò dẹ̀ le jù láti wú wọn jáda láti inú ilẹ̀ pẹ̀lú irinṣẹ́ àtilẹ̀bá.",
+     " ḍᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃ�"
+    ],
+    [
+     "Àwọn ara Ìrano lo kọ́kọ́ bẹ̀rẹ̀ si ni sin ewure ní bíi ọdún 15,0000 sẹ́yìn ní Oke Sagrosi.",
+     " ḍᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃᵃ�"
+    ],
+    [
+     "Fotosintesisi ni ọ̀nà tí àwọn ewé ma n gbà gi ṣe ounje wọn láti orun. Wọ́n dẹ̀ ma n pèsè àbò.",
+     " ḍ្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្�"
+    ]
+   ],
+   "wer": 113.8,
+   "cer": 84.0,
+   "wer_nomarks": 112.8,
+   "cer_nomarks": 76.9
+  }
+ }
+}
