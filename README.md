@@ -68,3 +68,7 @@ assumed for the local translation runs (MLX); the ASR eval runs anywhere PyTorch
   N-ATLaS licence. This repo does not redistribute weights.
 - FLEURS (Google) and FLORES (Meta / OLDI): CC BY-SA 4.0.
 - Evaluation code: © Extrafemi Labs.
+
+## Site
+
+`python eval/build_site.py` builds `public/` from `site/`: the report (`site/template.html` + `results/summary.json`), the About and method, Developers, Privacy, Terms, Legal and 404 pages (`site/pages/`), the downloadable `data/summary.json`, shared head, bar and footer (`site/partials/`), and assets. Fonts are self-hosted (`tools/fetch_fonts.py`), and `site/_headers` sets a strict CSP, so the page makes no third-party requests and sets no cookies. Check links with `python tools/check_links.py`. Deploy with `npx wrangler deploy`.

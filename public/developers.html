@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Developers · Naija Eval</title>
+<meta name="description" content="Reproduce the Naija Eval scores for N-ATLaS on Hausa, Igbo and Yoruba: setup, commands, hardware and cost, and the results data.">
+<link rel="canonical" href="https://naija-eval.extrafemi.com/developers">
+<meta name="theme-color" content="#fdfcf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12110e" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Naija Eval">
+<meta property="og:title" content="Developers · Naija Eval">
+<meta property="og:description" content="Reproduce the Naija Eval scores for N-ATLaS on Hausa, Igbo and Yoruba: setup, commands, hardware and cost, and the results data.">
+<meta property="og:url" content="https://naija-eval.extrafemi.com/developers">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/cardo-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/lora-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css?v=fafb9325de">
+<link rel="stylesheet" href="/style.css?v=fafb9325de">
+<script src="/theme.js?v=fafb9325de"></script>
+<script src="/site.js?v=fafb9325de" defer></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="sitebar">
+  <div class="col sitebar-in">
+    <a class="brand" href="/">Naija Eval</a>
+    <nav class="sections" aria-label="Site"><a href="/">The report</a><a href="/about">About and method</a><a href="/developers" aria-current="page">Developers</a></nav>
+    <button class="icon-btn" type="button" id="theme" aria-label="Switch between light and dark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+    <button class="icon-btn menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="l1" d="M4 7h16"/><path class="l2" d="M4 12h16"/><path class="l3" d="M4 17h16"/></svg>
+    </button>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+</header>
+<div class="menu" id="menu" hidden>
+  <div class="menu-scrim" data-close></div>
+  <nav class="menu-panel" aria-label="Menu">
+    <div class="menu-head">
+      <span class="tag">Menu</span>
+      <button class="icon-btn" type="button" data-close aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="menu-group">
+      <h2 class="tag">The report</h2>
+      <a class="big-link" href="/">The report</a>
+      <a href="/#mt">Translation</a>
+      <a href="/#asr">Speech to text</a>
+      <a href="/#ex">Read the outputs</a>
+      <a href="/#find">Findings</a>
+    </div>
+    <div class="menu-group">
+      <h2 class="tag">Pages</h2>
+      <a class="big-link" href="/about">About and method</a>
+      <a class="big-link" href="/developers">Developers</a>
+    </div>
+    <div class="menu-group">
+      <h2 class="tag">Extrafemi</h2>
+      <a href="https://research.extrafemi.com/research">Extrafemi Research</a>
+      <a href="https://labs.extrafemi.com/">Extrafemi Labs</a>
+      <a href="https://transcribe.extrafemi.com/">Naija Transcribe</a>
+    </div>
+    <div class="menu-group">
+      <h2 class="tag">Legal</h2>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/legal">Legal and licences</a>
+    </div>
+  </nav>
+</div>
+<main id="main" tabindex="-1">
+<div class="col page">
+  <header class="page-head">
+    <h1>Developers</h1>
+    <p class="lede">Everything here can be re-run: the same public test sets, one fixed prompt for every model, and a script for each step.</p>
+  </header>
+
+  <section aria-labelledby="repro-h">
+    <div class="divider"><span class="tag">Quick start</span></div>
+    <div class="repro">
+      <div class="repro-side">
+        <h2 id="repro-h">Reproduce it</h2>
+        <p>Accept the NCAIR1 model terms on Hugging Face before you log in.</p>
+      </div>
+      <ol class="code" aria-label="Commands">
+        <li><code>pip install -r requirements.txt</code></li>
+        <li><code>hf auth login</code><span># accept the NCAIR1 model terms first</span></li>
+        <li><code>python eval/fetch.py all</code><span># about 22 GB</span></li>
+        <li><code>python eval/eval_asr.py 100</code></li>
+        <li><code>python eval/eval_mt.py models/natlas-4bit natlas 100</code></li>
+        <li><code>python eval/eval_mt_api.py anthropic/claude-haiku-5.5 haiku55 100</code></li>
+        <li><code>python eval/summarize.py</code></li>
+      </ol>
+    </div>
+  </section>
+
+  <section aria-labelledby="full-h">
+    <div class="divider"><span class="tag">Full run</span></div>
+    <div class="repro">
+      <div class="repro-side">
+        <h2 id="full-h">Every model, step by step</h2>
+        <p>The 4-bit conversion and both local translation runs need Apple Silicon (MLX). The speech test runs anywhere PyTorch does.</p>
+      </div>
+      <ol class="code" aria-label="Commands">
+        <li><code>python3 -m venv .venv &amp;&amp; . .venv/bin/activate</code></li>
+        <li><code>pip install -r requirements.txt</code></li>
+        <li><code>hf auth login</code><span># read token; accept the NCAIR1 model terms first</span></li>
+        <li><code>python eval/fetch.py all</code><span># ~22 GB: ASR models, FLEURS, N-ATLaS (16 GB), Llama 3.1 4-bit</span></li>
+        <li><code>mlx_lm.convert --hf-path models/N-ATLaS --mlx-path models/natlas-4bit -q --q-bits 4</code></li>
+        <li><code>python eval/eval_asr.py 100</code></li>
+        <li><code>python eval/eval_mt.py models/natlas-4bit natlas 100</code></li>
+        <li><code>python eval/eval_mt.py models/llama31-4bit llama31 100</code></li>
+        <li><code>python eval/eval_mt_api.py anthropic/claude-sonnet-5.5 sonnet55 100</code><span># hosted models: put OPENROUTER_API_KEY=... in ~/.config/naija-eval/.env</span></li>
+        <li><code>python eval/summarize.py</code></li>
+      </ol>
+    </div>
+  </section>
+
+  <section aria-labelledby="facts-h">
+    <div class="divider"><span class="tag">What it takes</span></div>
+    <h2 id="facts-h" class="visually-hidden">What it takes</h2>
+    <dl class="method">
+      <div><dt>Downloads.</dt><dd>About 22 GB: the speech models, FLEURS, N-ATLaS (16 GB) and Llama 3.1 in 4-bit.</dd></div>
+      <div><dt>Hardware.</dt><dd>Local translation ran on an Apple M5 in 4-bit so the models fit in 16 GB of memory.</dd></div>
+      <div><dt>Hosted cost.</dt><dd>$1.59 for all four hosted models, 600 translations each, through OpenRouter.</dd></div>
+      <div><dt>Licences.</dt><dd>You download the models and data from their owners and must follow their licences. See <a href="/legal">Legal and licences</a> and the <a href="/terms#reproduce">terms</a>.</dd></div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="data-h">
+    <div class="divider"><span class="tag">Data</span></div>
+    <div class="repro">
+      <div class="repro-side">
+        <h2 id="data-h">The results file</h2>
+        <p>This is the file the report is built from: every score, with and without tone marks, and the example translations.</p>
+      </div>
+      <div class="files">
+        <a class="file" href="/data/summary.json" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+          <span><strong>summary.json</strong><small>Scores for 6 translation models and 3 speech languages · 51 KB</small></span>
+        </a>
+        <dl class="fields">
+          <div><dt>mt</dt><dd>One entry per model: name, where it ran, items per direction, scores per direction, scores ignoring tone marks, average, hosted cost in US dollars, and example translations.</dd></div>
+          <div><dt>asr</dt><dd>Per language: number of clips, then word and character error rates for N-ATLaS and stock Whisper, with and without tone marks, and speed as a real-time factor.</dd></div>
+          <div><dt>pairs</dt><dd>The six translation directions, for example en-&gt;ha.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <nav class="next" aria-label="Next">
+    <a class="next-card" href="/about#meth"><span class="tag">About and method</span><strong>How we tested, and the limits</strong><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="next-card" href="/"><span class="tag">The report</span><strong>See the results</strong><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </nav>
+</div>
+</main>
+<footer class="site-foot">
+  <div class="col research">
+    <div>
+      <h2>Naija Eval is Extrafemi research.</h2>
+      <p>Policy work and academic research from the Extrafemi desk: open access, footnoted, with corrections kept on the record.</p>
+    </div>
+    <a class="pill solid" href="https://research.extrafemi.com/research">Explore Extrafemi Research
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+  </div>
+  <div class="col family">
+    <a class="fam" href="https://transcribe.extrafemi.com/">
+      <span class="tag">Built from N-ATLaS</span>
+      <strong>Naija Transcribe</strong>
+      <span>Free speech-to-text for Hausa, Igbo, Yoruba and Nigerian English, built on the N-ATLaS speech models tested here.</span>
+      <span class="go">transcribe.extrafemi.com <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+    </a>
+    <a class="fam" href="https://labs.extrafemi.com/">
+      <span class="tag">A product of the Labs</span>
+      <strong>Extrafemi Labs</strong>
+      <span>A studio that builds working software with AI tools. Every build is live.</span>
+      <span class="go">labs.extrafemi.com <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+    </a>
+  </div>
+  <div class="col foot-cols">
+    <div>
+      <div class="mark">Naija Eval</div>
+      <p>An independent, reproducible scorecard for N-ATLaS, Nigeria's multilingual model, on Hausa, Igbo and Yoruba.</p>
+    </div>
+    <nav aria-label="The report">
+      <h3>The report</h3>
+      <ul>
+        <li><a href="/#mt">Translation</a></li>
+        <li><a href="/#asr">Speech to text</a></li>
+        <li><a href="/#ex">Read the outputs</a></li>
+        <li><a href="/#find">Findings</a></li>
+        <li><a href="/about">About and method</a></li>
+        <li><a href="/developers">Developers</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Extrafemi">
+      <h3>Extrafemi</h3>
+      <ul>
+        <li><a href="https://research.extrafemi.com/research">Research</a></li>
+        <li><a href="https://labs.extrafemi.com/">Labs</a></li>
+        <li><a href="https://transcribe.extrafemi.com/">Naija Transcribe</a></li>
+        <li><a href="https://transcribe.extrafemi.com/legal#contact">Contact us</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Legal">
+      <h3>Legal</h3>
+      <ul>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/legal">Legal and licences</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="col foot-base">
+    <p>N-ATLaS models © Awarri Technologies and the Federal Government of Nigeria, under the N-ATLaS licence. Naija Eval does not redistribute any model weights. FLEURS © Google, FLORES © Meta and OLDI, both CC BY-SA 4.0.</p>
+    <p>© 2026 Extrafemi Labs · An Extrafemi Labs build · No cookies, no tracking.</p>
+  </div>
+</footer>
+</body>
+</html>

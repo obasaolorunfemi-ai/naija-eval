@@ -1,0 +1,66 @@
+<!--
+title: About and method · Naija Eval
+description: What Naija Eval is, which models it compares, how the Hausa, Igbo and Yoruba tests were run, and the limits of a first pass.
+-->
+<div class="col page">
+  <header class="page-head">
+    <h1>About and method</h1>
+    <p class="lede">Nigeria's own language model, N-ATLaS, tested in the open. We compare it with the Llama model it was built from and with four hosted models, on Hausa, Igbo and Yoruba speech and translation.</p>
+    <p class="tag">Extrafemi Labs · First pass, 8 October 2026</p>
+  </header>
+
+  <section aria-labelledby="about-h">
+    <div class="divider"><span class="tag">About</span></div>
+    <div class="head">
+      <h2 id="about-h">Numbers anyone can re-run</h2>
+      <p>The N-ATLaS model card publishes only self-reported human ratings. Naija Eval publishes numbers anyone can re-run: the same public test sets, one fixed prompt, and the scripts on the <a href="/developers">Developers</a> page. It is part of <a href="https://research.extrafemi.com/research">Extrafemi Research</a>, and an Extrafemi Labs build.</p>
+    </div>
+    <div class="models">
+      <div>
+        <h3>Translation</h3>
+        <ul>
+          <li><strong>N-ATLaS</strong> <span>4-bit, run locally</span></li>
+          <li>Llama 3.1 8B Instruct <span>its base model, 4-bit, run locally</span></li>
+          <li>Claude Sonnet 5.5 <span>hosted</span></li>
+          <li>Gemini 3.8 Flash <span>hosted</span></li>
+          <li>GPT-6.1 Sol <span>hosted</span></li>
+          <li>Claude Haiku 5.5 <span>hosted</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Speech to text</h3>
+        <ul>
+          <li><strong>N-ATLaS</strong> Hausa, Igbo and Yoruba speech models <span>fine-tuned Whisper Small</span></li>
+          <li>Stock Whisper Small <span>openai/whisper-small, no Igbo</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="meth" aria-labelledby="meth-h">
+    <div class="divider"><span class="tag">Method</span><span class="tag">Reproducible</span></div>
+    <div class="head"><h2 id="meth-h">How we tested, and the limits</h2></div>
+    <dl class="method">
+      <div><dt>Data.</dt><dd>Google's FLEURS test set: read speech of FLORES sentences, which are also aligned across languages for translation. CC BY-SA 4.0.</dd></div>
+      <div><dt>Speech.</dt><dd>NCAIR1 Hausa, Igbo and Yoruba ASR models (fine-tuned Whisper Small) against stock openai/whisper-small, greedy decoding.</dd></div>
+      <div><dt>Translation.</dt><dd>One fixed prompt for every model, temperature 0, first line of output kept. N-ATLaS and Llama 3.1 ran locally in 4-bit on an Apple M5 with MLX; hosted models ran through OpenRouter.</dd></div>
+      <div><dt>Sample size.</dt><dd>100 items per language and direction. This is a first pass, not a leaderboard.</dd></div>
+      <div><dt>Quantization.</dt><dd>The 4-bit local models may score a point or two below full precision.</dd></div>
+      <div><dt>Contamination.</dt><dd>FLEURS and FLORES are public, so any model here may have seen them in training.</dd></div>
+      <div><dt>Real speech.</dt><dd>FLEURS is clean read speech with formal vocabulary. Street voice notes will score differently.</dd></div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="scores-h">
+    <div class="divider"><span class="tag">Scores</span></div>
+    <div class="head">
+      <h2 id="scores-h">What the two scores mean</h2>
+      <p>Speech is scored by word error rate: the share of words the transcript gets wrong, so lower is better. Translation is scored by chrF++, from 0 to 100, where higher is better. Both are also shown ignoring tone marks, so missing or wrong marks can be told apart from wrong words.</p>
+    </div>
+  </section>
+
+  <nav class="next" aria-label="Next">
+    <a class="next-card" href="/"><span class="tag">The report</span><strong>See the results</strong><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="next-card" href="/developers"><span class="tag">Developers</span><strong>Reproduce it</strong><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </nav>
+</div>
