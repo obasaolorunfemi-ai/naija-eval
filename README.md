@@ -43,6 +43,14 @@ is what the site reads.
 - FLEURS/FLORES are public: any model, N-ATLaS included, may have seen them in training.
 - FLEURS is read speech of Wikipedia sentences — cleaner audio, harder vocabulary than real voice notes.
 
+## For tools that choose between models
+
+`python eval/scorecard.py` (and the site build) writes `public/data/scorecard.json`: these results as a
+[model scorecard](https://github.com/obasaolorunfemi-ai/lodestone/blob/main/docs/scorecards.md), a small shared format
+that [Lodestone](https://github.com/obasaolorunfemi-ai/lodestone) can read to try the best-measured model first for a language.
+In the other direction, Lodestone can list the models a tool actually calls, and `python eval/candidates.py <list>` says which
+of them are not measured yet and prints the commands to measure them. Tests: `python -m unittest discover -s eval -p 'test_*.py'`.
+
 ## Reproduce
 
 ```bash

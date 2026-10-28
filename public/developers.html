@@ -150,6 +150,14 @@
           <div><dt>asr</dt><dd>Per language: number of clips, then word and character error rates for N-ATLaS and stock Whisper, with and without tone marks, and speed as a real-time factor.</dd></div>
           <div><dt>pairs</dt><dd>The six translation directions, for example en-&gt;ha.</dd></div>
         </dl>
+        <a class="file" href="/data/scorecard.json" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+          <span><strong>scorecard.json</strong><small>The same scores in a shared format, for tools that choose between models</small></span>
+        </a>
+        <dl class="fields">
+          <div><dt>scores</dt><dd>One row per model, task, metric and language: the score, whether higher is better, how many items it rests on, and the day it was measured. Hosted models are named by their OpenRouter id. Models run locally are named local/ and cannot be routed.</dd></div>
+          <div><dt>Using it</dt><dd>Lodestone, an open-source library for calling AI models, can read it to try the models that did best on a language first. The format is described in <a href="https://github.com/obasaolorunfemi-ai/lodestone/blob/main/docs/scorecards.md">its repository</a>.</dd></div>
+        </dl>
       </div>
     </div>
   </section>

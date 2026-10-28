@@ -8,7 +8,7 @@
 Usage (from repo root): python eval/build_site.py
 Deploy (Cloudflare Workers static assets): npx wrangler deploy
 """
-import hashlib, json, os, re, shutil
+import hashlib, json, os, re, shutil, sys
 
 S, P = "site", "public"
 read = lambda p: open(p, encoding="utf-8").read()
@@ -68,6 +68,15 @@ write(f"{P}/index.html", index)
 # the results file, for developers
 os.makedirs(f"{P}/data")
 write(f"{P}/data/summary.json", json.dumps(data, ensure_ascii=False, indent=1))
+
+# the same results as a model scorecard (model-scorecard/1), for tools that route between models
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import scorecard
+card = scorecard.build(json.load(open("results/summary.json")))  # the unstripped file: summary.json above had its examples removed
+bad = scorecard.problems(card)
+if bad:
+    raise SystemExit("scorecard is invalid:\n  " + "\n  ".join(bad))
+write(f"{P}/data/scorecard.json", json.dumps(card, ensure_ascii=False, indent=1))
 FILL = {"{{models}}": str(len(data["mt"])), "{{asr_langs}}": str(len(data["asr"])),
         "{{size}}": f'{os.path.getsize(f"{P}/data/summary.json") / 1024:.0f} KB'}
 
