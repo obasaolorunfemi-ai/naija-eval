@@ -1,0 +1,140 @@
+{
+ "model": "nemotron3ultra",
+ "openrouter_id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+ "n": 30,
+ "pairs": {
+  "en->ha": {
+   "chrf++": 21.0,
+   "chrf++_nomarks": 21.0,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "ref": "Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.",
+     "hyp": "Romantisism ya samu yawan determinism na al'adu, wanda aka cire daga marubuta kamar Goethe, Fichte, da Schlegel."
+    },
+    {
+     "src": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "ref": "Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.",
+     "hyp": "Ba ya sanya lambar don kudin da aka rage, wanda ya ce za a yi su tare da kan ha"
+    },
+    {
+     "src": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "ref": "Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.",
+     "hyp": "Alalomi suna haka cikin kusa da cewa suna hadin da shiri a tsakanin shiri biyu ko sai yawa. Kada ku tuna cewa akwai abubuwa da yawa a cikin jerin periodic table."
+    }
+   ]
+  },
+  "ha->en": {
+   "chrf++": 32.8,
+   "chrf++_nomarks": 32.8,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.",
+     "ref": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "hyp": "The user wants a translation from Hausa to English. The text is: \"Tsarin fasaha da adabi samar da al’adu, wanda marubuta irinsu Gothe, Fichte da Schlegel su ka samar.\""
+    },
+    {
+     "src": "Bai sanya wani adadi don ragewar ba, inda ya ce hakan zai danganta ne da abin da tattalin arzikin China ke fitarwa.",
+     "ref": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "hyp": "He did not set any limit for the extension, saying that would contradict what China's economic plans call for."
+    },
+    {
+     "src": "Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.",
+     "ref": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "hyp": "The user wants a translation from Hausa to English. The text is: \"Karafan gami ne na ƙarafa biyu ko fiye da haka. Kar a manta cewa akwai abubuwa da yawa a kan jadawali na lokaci-lokaci.\""
+    }
+   ]
+  },
+  "en->ig": {
+   "chrf++": 13.3,
+   "chrf++_nomarks": 14.9,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "ref": "Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.",
+     "hyp": "The user wants me to translate the English text into Igbo. The text is: \"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.\""
+    },
+    {
+     "src": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "ref": "O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.",
+     "hyp": "The user wants me to translate an English sentence into Igbo. I need to provide only the Igbo translation, nothing else."
+    },
+    {
+     "src": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "ref": "Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.",
+     "hyp": "Alọị bụ nke mkpụrụokwu nke abụọ ma ọ bụ ọhụrụ metara. Echighi na enweghị ụfọdụ elemụnt n'akwụkwọ periyọdik."
+    }
+   ]
+  },
+  "ig->en": {
+   "chrf++": 33.6,
+   "chrf++_nomarks": 33.8,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Ihunanya ya nwere otutu ihe banyere mmeme nke ọdịnala, nke sitere n'aka ndị edemede dịka Goethe, Fichte, na Schlegel.",
+     "ref": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "hyp": "His love encompasses many aspects of traditional religion, as derived from writers such as Goethe, Fichte, and Schlegel."
+    },
+    {
+     "src": "O kwughi oke a ga-akwụ, kama ọ sị na a ga-ele anya na nrụpụta akụ na ụba China wee kwụọ ụgwọ.",
+     "ref": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "hyp": "It is not difficult for this to happen, but it is said that attention will be paid to extracting wealth from China to repay the debt."
+    },
+    {
+     "src": "Ụmụ alọị bụgodu mwurikọta ígwè abụọ ma ọ bụ karịa. Echefula na e nwere ọtụtụ njìmebe nọ na tebụlụ pirịọdik.",
+     "ref": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "hyp": "Alloys are good combinations of two metals or carbon. Remember that there are many elements in the periodic table."
+    }
+   ]
+  },
+  "en->yo": {
+   "chrf++": 11.1,
+   "chrf++_nomarks": 15.4,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "ref": "Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.",
+     "hyp": "The user wants me to translate the English text into Yoruba. The text is: \"Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.\""
+    },
+    {
+     "src": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "ref": "Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.",
+     "hyp": "The user wants me to translate English text into Yoruba. I need to output only the Yoruba translation, nothing else."
+    },
+    {
+     "src": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "ref": "Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.",
+     "hyp": "Àpẹrẹ níwọn ohun-ìgbésí ayé tó wà ní àpẹrẹ méjì ní àfikun tó dá lórí akọ́lé àwọn ẹ̀dá. Kò sí ohun tí a lè fi hàn àwọn ohun-ìgbésí ayé wọn."
+    }
+   ]
+  },
+  "yo->en": {
+   "chrf++": 26.8,
+   "chrf++_nomarks": 27.6,
+   "empty": 0,
+   "examples": [
+    {
+     "src": "Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.",
+     "ref": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+     "hyp": "The user wants a translation from Yoruba to English. The text is: \"Romantisimi ma n sába dá àṣà láti àwọn akosile awọn akọ̀wé bío Gọẹ́tì, Fíṣtì àti Ṣlegel.\""
+    },
+    {
+     "src": "Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.",
+     "ref": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+     "hyp": "The user wants a translation from Yoruba to English. The text is: \"Kò sàgbékalẹ̀ iye kankan fún ègé náà, sọ pé wọ́n yíò se é ní ìbámu àbájáde ọrọ̀ ajé ilẹ̀ China.\""
+    },
+    {
+     "src": "Àwọn àdàlú nípìlè jẹ́ àpapò àlùrọ méjì tàbí jù bẹ lọ. Láì gbàgbé wípé ọ̀pọ̀lọpọ̀ ìdá lówà lórí àtẹ sáà.",
+     "ref": "Alloys are basically a mixture of two or more metals. Don't forget that there are many elements on the periodic table.",
+     "hyp": "The players at the table are a combination of two or more cards. Don't forget that many cards remain on the table."
+    }
+   ]
+  }
+ },
+ "cost_usd": 0.0
+}
