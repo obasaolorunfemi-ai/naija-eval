@@ -9,6 +9,7 @@ MODELS = {  # label -> display name, how it ran
     "gemini38flash": ("Gemini 3.8 Flash", "hosted"),
     "gpt61sol": ("GPT-6.1 Sol", "hosted"),
     "haiku55": ("Claude Haiku 5.5", "hosted"),
+    "mistralsmall32": ("Mistral Small 3.2", "hosted"),
     "natlas": ("N-ATLaS", "local · 4-bit"),
     "llama31": ("Llama 3.1 8B Instruct", "local · 4-bit"),
 }
