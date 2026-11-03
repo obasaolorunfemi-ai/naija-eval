@@ -41,7 +41,7 @@ description: What Naija Eval is, which models it compares, how the Hausa, Igbo a
     <div class="divider"><span class="tag">Method</span><span class="tag">Reproducible</span></div>
     <div class="head"><h2 id="meth-h">How we tested, and the limits</h2></div>
     <dl class="method">
-      <div><dt>Data.</dt><dd>Google's FLEURS test set: read speech of FLORES sentences, which are also aligned across languages for translation. CC BY-SA 4.0.</dd></div>
+      <div><dt>Data.</dt><dd>Google's FLEURS test set: read speech of FLORES sentences, which are also aligned across languages for translation. CC BY 4.0.</dd></div>
       <div><dt>Speech.</dt><dd>NCAIR1 Hausa, Igbo and Yoruba ASR models (fine-tuned Whisper Small) against stock openai/whisper-small, greedy decoding.</dd></div>
       <div><dt>Translation.</dt><dd>One fixed prompt for every model, temperature 0, first line of output kept. N-ATLaS and Llama 3.1 ran locally in 4-bit on an Apple M5 with MLX; hosted models ran through OpenRouter.</dd></div>
       <div><dt>Sample size.</dt><dd>100 items per language and direction. This is a first pass, not a leaderboard.</dd></div>

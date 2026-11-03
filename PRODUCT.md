@@ -27,6 +27,6 @@ All of these, equally:
 
 - Every sentence, number, finding and caveat on the page is fixed copy; redesigns restyle and restructure, never rewrite or add claims.
 - Numbers come only from `results/summary.json`.
-- Licence attribution in the footer stays (N-ATLaS © Awarri Technologies and the Federal Government of Nigeria; FLEURS © Google, FLORES © Meta and OLDI, CC BY-SA 4.0). No model weights redistributed.
+- Licence attribution in the footer stays (N-ATLaS © Awarri Technologies and the Federal Government of Nigeria; FLEURS © Google (CC BY 4.0), FLORES © Meta and OLDI (CC BY-SA 4.0)). No model weights redistributed.
 - Hausa, Igbo and Yoruba text must render with correct letters and tone marks (ɓ ɗ ƙ ẹ ọ ṣ ị ụ ṅ + combining accents) in one face, never a mid-word fallback.
 - Visual family: Extrafemi Dashboards (dashboards.extrafemi.com) data-story system, with the SANU Report (reports.sanucoin.com) cover-then-report structure as the sample. No monospace fonts anywhere.
