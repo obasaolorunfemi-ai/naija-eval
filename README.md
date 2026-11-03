@@ -72,10 +72,11 @@ Hosted run cost: $1.59 for all four models (600 translations each). Apple Silico
 assumed for the local translation runs (MLX); the ASR eval runs anywhere PyTorch does.
 
 ## Licences and credits
-- N-ATLaS models: © Awarri Technologies and the Federal Government of Nigeria, under the
-  N-ATLaS licence. This repo does not redistribute weights.
-- FLEURS (Google) and FLORES (Meta / OLDI): CC BY-SA 4.0.
-- Evaluation code: © Extrafemi Labs.
+- **Evaluation code** (`eval/`, `tools/`, the site's build and templates): [Apache-2.0](LICENSE), © Extrafemi Labs.
+- **Results:** [CC BY 4.0](DATA-LICENSE.md) for the scores (`public/data/scorecard.json`) and the ASR results; [CC BY-SA 4.0](DATA-LICENSE.md) for the files that embed FLORES sentences and the models' translations of them. [DATA-LICENSE.md](DATA-LICENSE.md) lists which file is which. Credit: "Naija Eval, Extrafemi Labs".
+- **Test data:** FLORES (Meta and OLDI) is CC BY-SA 4.0; FLEURS (Google) is CC BY 4.0. This repo contains only short examples, not the datasets.
+- **N-ATLaS models:** © Awarri Technologies and the Federal Government of Nigeria, under the N-ATLaS licence. This repo does not redistribute weights.
+- Third-party credits, models and fonts are listed in [NOTICE](NOTICE).
 
 ## Site
 

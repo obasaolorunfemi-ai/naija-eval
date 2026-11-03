@@ -1,0 +1,19 @@
+Naija Eval
+Copyright 2026 Extrafemi Labs
+
+This product includes the work of others. The list below says what is used and under which licence. Nothing here implies that
+any of these organisations endorses Naija Eval.
+
+Test data (not redistributed in full; short examples appear in results files and on the site)
+  FLORES (Meta and OLDI), CC BY-SA 4.0 .......... https://creativecommons.org/licenses/by-sa/4.0/
+  FLEURS (Google), CC BY 4.0 ..................... https://creativecommons.org/licenses/by/4.0/
+
+Models (used to produce the results; no weights are redistributed)
+  N-ATLaS (Awarri Technologies and the Federal Government of Nigeria), under the N-ATLaS licence
+  Llama 3.1 8B (Meta), under the Llama 3.1 Community License
+  Whisper Small (OpenAI), MIT licence
+  Claude, Gemini, GPT and other hosted models were reached through OpenRouter under their providers' terms;
+  their outputs appear only as test results.
+
+Fonts (copies are in site/fonts and public/fonts, each with its licence text)
+  Cardo (David J. Perry) and Lora (The Lora Project Authors), SIL Open Font License 1.1
