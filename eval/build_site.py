@@ -38,8 +38,11 @@ for f in sorted(os.listdir(P)) + sorted(os.listdir(f"{P}/fonts")):
 v = h.hexdigest()[:10]
 
 HEAD, BAR, FOOT = read(f"{S}/partials/head.html"), read(f"{S}/partials/sitebar.html"), read(f"{S}/partials/footer.html")
-REPORT_NAV = [("#mt", "Translation"), ("#asr", "Speech to text"), ("#ex", "Outputs"), ("#find", "Findings"), ("/about", "About and method"), ("/developers", "Developers")]
-DOC_NAV = [("/", "The report"), ("/about", "About and method"), ("/developers", "Developers")]
+# The same links on every page. On the report they scroll to the section; from any other page they go to the report's section.
+SECTIONS = [("mt", "Translation"), ("asr", "Speech to text"), ("ex", "Outputs"), ("find", "Findings")]
+PAGE_LINKS = [("/about", "About and method"), ("/developers", "Developers")]
+REPORT_NAV = [(f"#{i}", l) for i, l in SECTIONS] + PAGE_LINKS
+DOC_NAV = [("/", "The report")] + [(f"/#{i}", l) for i, l in SECTIONS] + PAGE_LINKS
 
 
 def page(path, title, desc, body, nav, nav_label, extra_head=""):

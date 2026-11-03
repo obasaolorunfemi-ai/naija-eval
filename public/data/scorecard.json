@@ -1,7 +1,7 @@
 {
  "schema": "model-scorecard/1",
  "source": "naija-eval",
- "generatedAt": "2026-11-03T04:27:27Z",
+ "generatedAt": "2026-11-03T04:32:45Z",
  "scores": [
   {
    "model": "anthropic/claude-sonnet-5.5",

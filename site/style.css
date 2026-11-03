@@ -437,3 +437,13 @@ noscript p { background: var(--ox-wash); border: 1px solid var(--rule); border-r
 }
 @media (max-width: 860px) { .status { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .status-grid { grid-template-columns: 1fr; } }
+
+.research-essay { margin-top: 10px; font-size: .95rem; }
+.research-essay a { font-weight: 600; }
+
+/* The inline links carry all seven site links, which need about 800px beside the brand and the two buttons; below that the menu button holds the same links, so none are ever clipped. */
+@media (max-width: 1179px) {
+  .sections { display: none; }
+  .sitebar-in { justify-content: flex-end; }
+  .brand { margin-right: auto; }
+}
